@@ -14,7 +14,7 @@ DRIPS is distributed as an **Apptainer/SIF container**. Docker is no longer supp
 
 ## Download
 
-Download the current `drips_siam_blackwell.sif` file from the [GitHub Releases page](https://github.com/MIA-FAU/DRIPS/releases).
+Download the current `drips_blackwell.sif` file from the [GitHub Releases page](https://github.com/MIA-FAU/DRIPS/releases).
 
 ## Run DRIPS
 
@@ -30,7 +30,7 @@ Run the container with GPU support:
 ```bash
 apptainer run --nv \
   --bind "$HOME/cases:/data" \
-  drips_siam_blackwell.sif \
+  drips_blackwell.sif \
   --in /data/t1w.nii.gz \
   --out /data/pvs.nii.gz \
   --posterior /data/pvs_probability.nii.gz \
@@ -57,7 +57,7 @@ To retain the generated mask:
 ```bash
 apptainer run --nv \
   --bind "$HOME/cases:/data" \
-  drips_siam_blackwell.sif \
+  drips_blackwell.sif \
   --in /data/t1w.nii.gz \
   --out /data/pvs.nii.gz \
   --posterior /data/pvs_probability.nii.gz \
