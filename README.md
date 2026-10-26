@@ -14,7 +14,7 @@ DRIPS is distributed as an **Apptainer/SIF container**. Docker is no longer supp
 
 ## Download
 
-Download the current `drips_blackwell.sif` file from the [GitHub Releases page](https://github.com/MIA-FAU/DRIPS/releases).
+Download the current `drips_blackwell.sif` file from Google Drive: https://drive.google.com/file/d/1Oa08T3h6fMeLlc5omLL00sj8UU2mlnYc/view?usp=sharing .
 
 ## Run DRIPS
 
