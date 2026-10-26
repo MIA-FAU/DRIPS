@@ -1,0 +1,39 @@
+Bootstrap: docker
+From: nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04
+
+%files
+    requirements.txt /opt/drips/requirements.txt
+    drips_infer.py /opt/drips/drips_infer.py
+    run_drips.sh /usr/local/bin/drips
+    models /opt/drips/models
+
+%environment
+    export PATH=/usr/local/bin:${PATH}
+    export PYTHONUNBUFFERED=1
+    export PIP_NO_CACHE_DIR=1
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        ca-certificates ffmpeg git libgl1 libglib2.0-0 libgomp1 libsm6 libxext6 xvfb \
+        python3 python3-pip
+    rm -rf /var/lib/apt/lists/*
+
+    python3 -m pip install --no-cache-dir --upgrade pip
+    # cu128 PyTorch provides Blackwell (sm_120) support.  --no-deps avoids
+    # fetching CUDA runtime wheels that are already supplied by this base.
+    python3 -m pip install --no-cache-dir --timeout 180 --retries 5 --no-deps \
+        torch==2.9.1 --index-url https://download.pytorch.org/whl/cu128
+    python3 -m pip install --no-cache-dir "numpy<2.0.0" fury
+    python3 -m pip install --no-cache-dir -r /opt/drips/requirements.txt
+
+    chmod 755 /usr/local/bin/drips
+
+%test
+    drips --help
+    python3 -c 'import torch; print(torch.__version__, torch.version.cuda, torch.cuda.get_arch_list())'
+
+%runscript
+    exec /usr/local/bin/drips "$@"
